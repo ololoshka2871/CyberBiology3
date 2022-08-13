@@ -475,6 +475,10 @@ int main(int argc, char* argv[])
 			ImGui::Text(", 1 thread used");
 #endif
 
+#ifdef UseOpenMP
+			ImGui::Text(", OpenMP used");
+#endif
+
 #ifdef UseFourThreads
 			ImGui::Text(", 4 threads used");
 #endif

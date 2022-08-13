@@ -1,3 +1,5 @@
+#include <omp.h>
+
 #include "Field.h"
 
 
@@ -368,6 +370,35 @@ inline void Field::tick_single_thread()
 
 }
 
+//tick function for single threaded build
+inline void Field::tick_openmp()
+{
+    objectsTotal = 0;
+
+#pragma omp parallel 
+    {
+#pragma omp  for
+        for (int64_t ix = 0; ix < FieldCellsWidth; ++ix)
+        {
+            uint this_chank_obj_cnt = 0;
+            auto id = omp_get_thread_num();
+
+            for (uint iy = 0; iy < FieldCellsHeight; ++iy)
+            {
+                auto tmpObj = allCells[ix][iy];
+
+                if (tmpObj)
+                {
+                    ++this_chank_obj_cnt;
+                    ObjectTick(tmpObj);
+                }
+            }
+#pragma atomic 
+            objectsTotal += this_chank_obj_cnt;
+        }  
+    }
+}
+
 //Wait for a signal 
 inline void Field::ThreadWait(const uint index)
 {
@@ -520,6 +551,8 @@ void Field::tick(uint thisFrame)
 
 #ifdef UseOneThread
     tick_single_thread();
+#elif defined(UseOpenMP)
+    tick_openmp();
 #else
     tick_multiple_threads();
 #endif

@@ -68,6 +68,9 @@ class Field
     //tick function for single threaded build
     inline void tick_single_thread();
 
+    //tick function witn OpenMP multythreading
+    inline void tick_openmp();
+
     //Process function for 4 threaded simulation
     void ProcessPart_4Threads(const uint X1, const uint Y1, const uint X2, const uint Y2, const uint index);
 

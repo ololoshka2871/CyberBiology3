@@ -21,8 +21,9 @@
 
 //choose only 1 option------
 //#define UseOneThread
+#define UseOpenMP
 //#define UseFourThreads
-#define UseEightThreads
+//#define UseEightThreads
 //--------------------------
 
 //-----------------------------------------------------------------

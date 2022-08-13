@@ -26,7 +26,13 @@ set(SRC
     Systems.h
 )
 
+find_package(OpenMP REQUIRED)
+
 add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SRC})
+
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 target_include_directories(${CMAKE_PROJECT_NAME} 
     PUBLIC
